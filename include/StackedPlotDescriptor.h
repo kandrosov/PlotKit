@@ -274,7 +274,7 @@ private:
 
     PageOptions page_opt;
     HistOptions signal_opt, bkg_opt, data_opt;
-    boost::optional<HistOptions> bkg_unc_opt;
+    std::optional<HistOptions> bkg_unc_opt;
 
     PlotRangeTuner range_tuner;
 };
