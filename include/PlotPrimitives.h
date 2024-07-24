@@ -5,7 +5,7 @@
 #include <TAttText.h>
 #include <TH1.h>
 #include <TColor.h>
-#include <boost/regex.hpp>
+#include <regex>
 
 #include "EnumNameMap.h"
 #include "NumericPrimitives.h"
@@ -425,8 +425,8 @@ public:
     explicit Color(int color_id) { RetrieveTColor(color_id); }
     explicit Color(const std::string& hex_color)
     {
-        static const boost::regex hex_color_pattern("^#(?:[0-9a-fA-F]{2}){3}$");
-        if(!boost::regex_match(hex_color, hex_color_pattern))
+        static const std::regex hex_color_pattern("^#(?:[0-9a-fA-F]{2}){3}$");
+        if(!std::regex_match(hex_color, hex_color_pattern))
             throw analysis::exception("Invalid color '%1%'.") % hex_color;
         const int color_id = TColor::GetColor(hex_color.c_str());
         RetrieveTColor(color_id);

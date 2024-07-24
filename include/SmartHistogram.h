@@ -403,7 +403,7 @@ private:
     bool store{true};
     bool use_log_x{false}, use_log_y{false};
     double max_y_sf{1}, min_y_sf{1};
-    boost::optional<double> y_min;
+    std::optional<double> y_min;
     bool divide_by_bin_width{false};
     std::string legend_title;
     MultiRange blind_ranges;

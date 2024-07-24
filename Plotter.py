@@ -57,7 +57,6 @@ class Plotter(object):
       ROOT.gROOT.SetBatch(True)
       python_dir = os.path.dirname(os.path.abspath(__file__))
       header_dir = os.path.join(python_dir, "include")
-
       ROOT.gInterpreter.Declare(f'#include "{header_dir}/PdfPrinter.h"')
       ROOT.gInterpreter.Declare(f'#include "{header_dir}/StackedPlotDescriptor.h"')
       Plotter.initialized = True
@@ -77,7 +76,7 @@ class Plotter(object):
     self.page = LoadPageOptions(self.page_cfg['page_setup'])
 
 
-  def plot(self, hist_name, histograms, output_file, custom=None):
+  def plot(self, hist_name, histograms, output_file, want_data=True, custom=None):
     page_cfg = copy.deepcopy(self.page_cfg)
     if custom:
       for key, value in custom.items():
@@ -101,7 +100,8 @@ class Plotter(object):
       elif hist_type == 'background':
         desc.AddBackgroundHistogram(smart_hists[name], input['title'], ROOT.root_ext.Color.Parse(input['color']))
       elif hist_type == 'data':
-        desc.AddDataHistogram(smart_hists[name], input['title'])
+        if want_data:
+          desc.AddDataHistogram(smart_hists[name], input['title'])
       else:
         raise RuntimeError(f'Unknown histogram type: {hist_type}')
     printer.Print(hist_name, desc, True)
