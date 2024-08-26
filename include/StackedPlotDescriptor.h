@@ -257,7 +257,7 @@ private:
         frame_hist.GetYaxis()->SetLabelOffset(page_opt.ratio_y_label_offset);
         frame_hist.GetYaxis()->SetNdivisions(page_opt.ratio_n_div_y);
         if(page_opt.max_ratio > 0)
-            frame_hist.GetYaxis()->SetRangeUser(std::max(0., 2 - page_opt.max_ratio), page_opt.max_ratio);
+            frame_hist.GetYaxis()->SetRangeUser(0.5,1.5);//(std::max(0., 2 - page_opt.max_ratio), page_opt.max_ratio);
     }
 
     template<typename Item>
