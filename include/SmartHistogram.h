@@ -233,17 +233,26 @@ public:
 
     SmartHistogram(const std::string& name, int nbins, double low, double high)
         : TH1D(name.c_str(), name.c_str(), nbins, low, high), AbstractHistogram(name), store(true),
-          use_log_y(false), max_y_sf(1), divide_by_bin_width(false) {}
+          use_log_y(false),use_log_x(false), max_y_sf(1), divide_by_bin_width(false) {}
 
     SmartHistogram(const std::string& name, const std::vector<double>& bins)
         : TH1D(name.c_str(), name.c_str(), static_cast<int>(bins.size()) - 1, bins.data()), AbstractHistogram(name),
-          store(true), use_log_y(false), max_y_sf(1), divide_by_bin_width(false) {}
+          store(true), use_log_y(false),use_log_x(false), max_y_sf(1), divide_by_bin_width(false) {}
 
     SmartHistogram(const std::string& name, int nbins, double low, double high, const std::string& x_axis_title,
                    const std::string& y_axis_title, bool _use_log_y, double _max_y_sf, bool _divide_by_bin_width,
                    bool _store)
         : TH1D(name.c_str(), name.c_str(), nbins, low, high), AbstractHistogram(name), store(_store),
-          use_log_y(_use_log_y), max_y_sf(_max_y_sf), divide_by_bin_width(_divide_by_bin_width)
+          use_log_y(_use_log_y),use_log_x(false), max_y_sf(_max_y_sf), divide_by_bin_width(_divide_by_bin_width)
+    {
+        SetXTitle(x_axis_title.c_str());
+        SetYTitle(y_axis_title.c_str());
+    }
+    SmartHistogram(const std::string& name, int nbins, double low, double high, const std::string& x_axis_title,
+                   const std::string& y_axis_title, bool _use_log_y, bool _use_log_x,double _max_y_sf, bool _divide_by_bin_width,
+                   bool _store)
+        : TH1D(name.c_str(), name.c_str(), nbins, low, high), AbstractHistogram(name), store(_store),
+          use_log_y(_use_log_y),use_log_x(_use_log_x), max_y_sf(_max_y_sf), divide_by_bin_width(_divide_by_bin_width)
     {
         SetXTitle(x_axis_title.c_str());
         SetYTitle(y_axis_title.c_str());
@@ -253,15 +262,28 @@ public:
                    const std::string& y_axis_title, bool _use_log_y, double _max_y_sf, bool _divide_by_bin_width,
                    bool _store)
         : TH1D(name.c_str(), name.c_str(), static_cast<int>(bins.size()) - 1, bins.data()), AbstractHistogram(name),
-          store(_store), use_log_y(_use_log_y), max_y_sf(_max_y_sf), divide_by_bin_width(_divide_by_bin_width)
+          store(_store), use_log_y(_use_log_y),use_log_x(false), max_y_sf(_max_y_sf), divide_by_bin_width(_divide_by_bin_width)
     {
         SetXTitle(x_axis_title.c_str());
         SetYTitle(y_axis_title.c_str());
     }
 
+    SmartHistogram(const std::string& name, const std::vector<double>& bins, const std::string& x_axis_title,
+                   const std::string& y_axis_title, bool _use_log_y, bool _use_log_x,double _max_y_sf, bool _divide_by_bin_width,
+                   bool _store)
+        : TH1D(name.c_str(), name.c_str(), static_cast<int>(bins.size()) - 1, bins.data()), AbstractHistogram(name),
+          store(_store), use_log_y(_use_log_y), use_log_x(_use_log_x),max_y_sf(_max_y_sf), divide_by_bin_width(_divide_by_bin_width)
+    {
+        SetXTitle(x_axis_title.c_str());
+        SetYTitle(y_axis_title.c_str());
+    }
     SmartHistogram(const TH1D& other, bool _use_log_y, double _max_y_sf, bool _divide_by_bin_width)
-        : TH1D(other), AbstractHistogram(other.GetName()), store(false), use_log_y(_use_log_y), max_y_sf(_max_y_sf),
+        : TH1D(other), AbstractHistogram(other.GetName()), store(false), use_log_y(_use_log_y), use_log_x(false),max_y_sf(_max_y_sf),
           divide_by_bin_width(_divide_by_bin_width) {}
+    SmartHistogram(const TH1D& other, bool _use_log_y, bool _use_log_x, double _max_y_sf, bool _divide_by_bin_width)
+        : TH1D(other), AbstractHistogram(other.GetName()), store(false), use_log_y(_use_log_y),use_log_x(_use_log_x), max_y_sf(_max_y_sf),
+          divide_by_bin_width(_divide_by_bin_width) {}
+
 
     SmartHistogram(const std::string& name, const analysis::PropertyConfigReader::Item& p_config)
         : AbstractHistogram(name)
@@ -419,13 +441,22 @@ public:
                    int nbinsx, double xlow, double xup,
                    int nbinsy, double ylow, double yup)
         : TH2D(name.c_str(), name.c_str(), nbinsx, xlow, xup, nbinsy, ylow, yup),
-          AbstractHistogram(name), store(true), use_log_y(false), max_y_sf(1) {}
+          AbstractHistogram(name), store(true), use_log_y(false),use_log_x(false), max_y_sf(1) {}
 
     SmartHistogram(const std::string& name, int nbinsx, double xlow, double xup, int nbinsy, double ylow,
                    double yup, const std::string& x_axis_title, const std::string& y_axis_title, bool _use_log_y,
                    double _max_y_sf, bool _store)
         : TH2D(name.c_str(), name.c_str(), nbinsx, xlow, xup, nbinsy, ylow, yup),
-          AbstractHistogram(name), store(_store), use_log_y(_use_log_y), max_y_sf(_max_y_sf)
+          AbstractHistogram(name), store(_store), use_log_y(_use_log_y), use_log_x(false), max_y_sf(_max_y_sf)
+    {
+        SetXTitle(x_axis_title.c_str());
+        SetYTitle(y_axis_title.c_str());
+    }
+    SmartHistogram(const std::string& name, int nbinsx, double xlow, double xup, int nbinsy, double ylow,
+                   double yup, const std::string& x_axis_title, const std::string& y_axis_title, bool _use_log_y,
+                   bool _use_log_x, double _max_y_sf, bool _store)
+        : TH2D(name.c_str(), name.c_str(), nbinsx, xlow, xup, nbinsy, ylow, yup),
+          AbstractHistogram(name), store(_store), use_log_y(_use_log_y),  use_log_x(_use_log_x),max_y_sf(_max_y_sf)
     {
         SetXTitle(x_axis_title.c_str());
         SetYTitle(y_axis_title.c_str());
@@ -434,8 +465,7 @@ public:
     SmartHistogram(const std::string& name, const std::vector<double>& binsx, const std::vector<double>& binsy)
         : TH2D(name.c_str(), name.c_str(), static_cast<int>(binsx.size()) - 1, binsx.data(),
                static_cast<int>(binsy.size()) - 1, binsy.data()), AbstractHistogram(name),
-          store(true), use_log_y(false), max_y_sf(1) {}
-
+          store(true), use_log_y(false),  use_log_x(false),max_y_sf(1) {}
     virtual void WriteRootObject() override
     {
         std::lock_guard<Mutex> lock(GetMutex());
@@ -466,6 +496,7 @@ public:
     }
 
     bool UseLogY() const { return use_log_y; }
+    bool UseLogX() const { return use_log_x; }
     double MaxYDrawScaleFactor() const { return max_y_sf; }
     std::string GetXTitle() const { return GetXaxis()->GetTitle(); }
     std::string GetYTitle() const { return GetYaxis()->GetTitle(); }
@@ -493,6 +524,7 @@ public:
 private:
     bool store;
     bool use_log_y;
+    bool use_log_x;
     double max_y_sf;
 };
 

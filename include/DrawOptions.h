@@ -28,9 +28,9 @@ using Angle = ::analysis::Angle<2>;
 using Flag2D = ::root_ext::Point<bool, 2, false>;
 
 struct Page {
-  SizeI canvas_size{600, 600};
+  SizeI canvas_size{1000, 1000};
   Box main_pad{0, 0, 1, 1};
-  MarginBox margins{.1f, .1f, .1f, .1f};
+  MarginBox margins{.6f, .6f, .6f, .6f};
   Size paper_size{20.,20.};
   Color canvas_color{kWhite};
   short canvas_border_size{10};
@@ -41,7 +41,7 @@ struct Page {
   Point tick_length_xy{.03f, .03f};
   PointI n_div_xy{510, 510};
   Point axis_title_sizes{.005f, .005f}, axis_title_offsets{1.f, 1.f},
-        axis_label_sizes{.04f, .04f}, axis_label_offsets{.015f, .005f};
+        axis_label_sizes{.04f, .04f}, axis_label_offsets{.015f, .003f};
 
   std::string x_title, y_title;
   bool divide_by_bin_width{false};

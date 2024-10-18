@@ -105,6 +105,7 @@ public:
                                                 legend_pos.y() + legend_opt->size.y() * inner_size.y());
                 legend->SetFillColor(legend_opt->fill_color.GetColor_t());
                 legend->SetFillStyle(legend_opt->fill_style);
+                legend->SetNColumns(2);
                 legend->SetBorderSize(legend_opt->border_size);
                 legend->SetTextSize(legend_opt->text_size);
                 legend->SetTextFont(legend_opt->font.code());

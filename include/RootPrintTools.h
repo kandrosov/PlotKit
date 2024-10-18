@@ -240,6 +240,19 @@ void SetMargins(TRatioPlot& plot, const MarginBox<T>& box)
     plot.SetUpTopMargin(box.top());
 }
 
+double getPoissonErrorLow(double content){
+    double alpha = 1.- 0.682689492;
+    int n = int(content);
+    if(n==0){ return 0.;}
+    return (content - ROOT::Math::gamma_quantile( alpha/2, n, 1.));
+}
+double getPoissonErrorUp(double content){
+    double alpha = 1.- 0.682689492;
+    int n = int(content);
+    return (ROOT::Math::gamma_quantile_c( alpha/2, n+1, 1) - content);
+}
+
+
 template<typename Range = ::analysis::Range<double>>
 std::shared_ptr<TGraphAsymmErrors> HistogramToGraph(const TH1& hist, bool divide_by_bin_width = false,
                                                     const ::analysis::MultiRange<Range>& blind_ranges = {})
@@ -255,8 +268,12 @@ std::shared_ptr<TGraphAsymmErrors> HistogramToGraph(const TH1& hist, bool divide
         exl.push_back(x[n] - hist.GetBinLowEdge(bin));
         exh.push_back(hist.GetBinLowEdge(bin + 1) - x[n]);
         y.push_back(hist.GetBinContent(bin));
-        eyl.push_back(hist.GetBinErrorLow(bin));
-        eyh.push_back(hist.GetBinErrorUp(bin));
+        // std::cout << "bin id " << bin << " bin content " << hist.GetBinContent(bin) << std::endl; // bin content not working if rebinning
+        //eyl.push_back(hist.GetBinErrorLow(bin));
+        eyl.push_back(getPoissonErrorLow(hist.GetBinContent(bin)));
+        // std::cout << "bin id " << bin << " bin error low " << getPoissonErrorLow(hist.GetBinContent(bin)) << std::endl; // bin content not working if rebinning
+        eyh.push_back(getPoissonErrorUp(hist.GetBinContent(bin)));
+        // std::cout << "bin id " << bin << " bin error up " << getPoissonErrorUp(hist.GetBinContent(bin)) << std::endl; // bin content not working if rebinning
         if(divide_by_bin_width) {
             const double bin_width = hist.GetBinWidth(bin);
             y[n] /= bin_width;

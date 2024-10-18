@@ -19,6 +19,7 @@
     template<typename T> \
     const ::analysis::EnumNameMap<enum_type> __##enum_type##_names<T>::names
 
+
 #define ENUM_OSTREAM_OPERATORS() \
     template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value>::type> \
     inline std::ostream& operator<<(std::ostream& os, Enum e) { return ::analysis::operator <<(os, e); } \

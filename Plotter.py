@@ -7,9 +7,10 @@ import yaml
 
 def mk_smart_hist(hist, hist_desc):
   use_log_y = hist_desc.get('use_log_y', False)
+  use_log_x = hist_desc.get('use_log_x', False)
   max_y_sf = hist_desc.get('max_y_sf', 1.5)
   divide_by_bin_width = hist_desc.get('divide_by_bin_width', False)
-  smart_hist = ROOT.root_ext.SmartHistogram('TH1D')(hist, use_log_y, max_y_sf, divide_by_bin_width)
+  smart_hist = ROOT.root_ext.SmartHistogram('TH1D')(hist, use_log_y,use_log_x, max_y_sf, divide_by_bin_width)
   if 'x_title' in hist_desc:
     smart_hist.GetXaxis().SetTitle(hist_desc['x_title'])
   if 'y_title' in hist_desc:
