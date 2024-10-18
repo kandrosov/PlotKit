@@ -14,9 +14,11 @@
 #define ENUM_NAMES(enum_type) \
     template<typename T=void> \
     struct __##enum_type##_names { static const ::analysis::EnumNameMap<enum_type> names; }; \
-	struct __##enum_type##_names_impl : __##enum_type##_names<> { const ::analysis::EnumNameMap<enum_type>* names_ptr = &names;  }; \
+    struct __##enum_type##_names_impl : __##enum_type##_names<> { const ::analysis::EnumNameMap<enum_type>* names_ptr = &names;  }; \
+    namespace { const __##enum_type##_names_impl __##enum_type##_names_instance; } \
     template<typename T> \
     const ::analysis::EnumNameMap<enum_type> __##enum_type##_names<T>::names
+
 
 #define ENUM_OSTREAM_OPERATORS() \
     template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value>::type> \
