@@ -171,6 +171,7 @@ private:
         item.SetMarkerStyle(opt.marker_style);
         item.SetMarkerSize(opt.marker_size);
         item.SetMarkerColor(opt.marker_color.GetColor_t());
+
     }
 
     static void ApplyHistOptionsEx(Hist& hist, const HistOptions& opt)
@@ -256,8 +257,19 @@ private:
         frame_hist.GetYaxis()->SetLabelSize(page_opt.ratio_y_label_size * sf);
         frame_hist.GetYaxis()->SetLabelOffset(page_opt.ratio_y_label_offset);
         frame_hist.GetYaxis()->SetNdivisions(page_opt.ratio_n_div_y);
+        if(page_opt.log_y)
+        {
+            frame_hist.GetYaxis()->SetMoreLogLabels();
+            frame_hist.GetYaxis()->SetMaxDigits(2);
+        }
+        if(page_opt.log_x)
+        {
+            frame_hist.GetXaxis()->SetMoreLogLabels();
+            frame_hist.GetXaxis()->SetNoExponent();
+            frame_hist.GetXaxis()->SetMaxDigits(5);
+        }
         if(page_opt.max_ratio > 0)
-            frame_hist.GetYaxis()->SetRangeUser(0.5,1.5);//(std::max(0., 2 - page_opt.max_ratio), page_opt.max_ratio);
+            frame_hist.GetYaxis()->SetRangeUser(std::max(0., 2 - page_opt.max_ratio), page_opt.max_ratio);
     }
 
     template<typename Item>
