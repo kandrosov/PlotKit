@@ -106,7 +106,7 @@ class Plotter(object):
         )
         smart_hists = {}
         # for input in self.inputs_cfg:
-        print(histograms.items())
+        # print(histograms.items())
         for hist_key, (
             hist,
             plot_name,
@@ -114,7 +114,6 @@ class Plotter(object):
             process_group,
         ) in histograms.items():
             smart_hists[hist.GetName()] = mk_smart_hist(hist, self.hist_cfg[hist_name])
-            print(hist.GetName())
             if process_group == "signals":
                 desc.AddSignalHistogram(
                     smart_hists[hist.GetName()],
@@ -128,6 +127,13 @@ class Plotter(object):
                     plot_name,
                     ROOT.root_ext.Color.Parse(plot_color),
                 )
+            elif process_group == "data":
+                desc.AddDataHistogram(
+                    smart_hists[hist.GetName()],
+                    plot_name,
+                )
+            else:
+                raise RuntimeError(f'Unknown process group: {process_group}')
 
             # hist_type = input.get('type', 'background')
             # if hist_type == 'signal':
