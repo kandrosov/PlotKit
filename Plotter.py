@@ -84,7 +84,7 @@ class Plotter(object):
         self.bkg_unc_hist_opt = LoadHistOptions(self.page_cfg["bkg_unc_hist"])
         self.page = LoadPageOptions(self.page_cfg["page_setup"])
 
-    def plot(self, hist_name, histograms, output_file, want_data=True, custom=None):
+    def plot(self, hist_name, histograms, output_file, want_data=True, custom=None, scale=None):
         page_cfg = copy.deepcopy(self.page_cfg)
         if custom:
             for key, value in custom.items():
@@ -115,11 +115,17 @@ class Plotter(object):
         ) in histograms.items():
             smart_hists[hist.GetName()] = mk_smart_hist(hist, self.hist_cfg[hist_name])
             if process_group == "signals":
+                signal_scale = 1.0
+                if scale:
+                    if type(scale) in [ int, float ]:
+                        signal_scale = scale
+                    elif type(scale) == dict and hist.GetName() in scale:
+                        signal_scale = scale[hist.GetName()]
                 desc.AddSignalHistogram(
                     smart_hists[hist.GetName()],
                     plot_name,
                     ROOT.root_ext.Color.Parse(plot_color),
-                    1.0,
+                    signal_scale,
                 )
             elif process_group == "backgrounds":
                 desc.AddBackgroundHistogram(
