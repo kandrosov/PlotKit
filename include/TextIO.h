@@ -6,7 +6,6 @@
 #include <iomanip>
 #include <unordered_set>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem/convenience.hpp>
 
 namespace analysis {
 
@@ -103,11 +102,6 @@ std::string CollectionToString(const Collection& col, const std::string& separat
     for(; iter != col.end(); ++iter)
         ss << separator << *iter;
     return ss.str();
-}
-
-inline std::string RemoveFileExtension(const std::string& file_name)
-{
-    return boost::filesystem::change_extension(file_name, "").string();
 }
 
 inline std::string GetFileNameWithoutPath(const std::string& file_name)
